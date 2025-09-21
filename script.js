@@ -1,19 +1,21 @@
 
-// Chart data for company growth (dummy)
 document.addEventListener('DOMContentLoaded', function(){
-  const ctx = document.getElementById('growthChart')?.getContext('2d');
-  if(ctx){
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['2018','2019','2020','2021','2022','2023','2024'],
-        datasets: [
-          { label: 'Reliance Retail (est.)', data: [900,1100,1400,1700,2000,2250,2450], borderColor:'#0b66c3', tension:0.3, fill:false },
-          { label: 'Tata Technologies (est.)', data: [3000,3400,4100,5200,6300,7600,8900], borderColor:'#00a3d2', tension:0.3, fill:false },
-          { label: 'NSE (est.)', data: [1800,2000,2300,2700,3100,3800,4500], borderColor:'#ff7a00', tension:0.3, fill:false }
-        ]
-      },
-      options: { responsive:true, plugins:{legend:{position:'top'}}}
+  // slider
+  const slides = document.querySelector('.slides');
+  const total = document.querySelectorAll('.slide').length;
+  let idx = 0;
+  function go(i){ slides.style.transform = `translateX(-${i*100}%)`; idx = i; }
+  document.querySelector('#next').addEventListener('click', ()=> go((idx+1)%total));
+  document.querySelector('#prev').addEventListener('click', ()=> go((idx-1+total)%total));
+  // auto
+  setInterval(()=> go((idx+1)%total), 5000);
+  // FAQ accordion
+  document.querySelectorAll('.faq button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const content = btn.nextElementSibling;
+      const open = content.style.display === 'block';
+      document.querySelectorAll('.faq .content').forEach(c=> c.style.display='none');
+      if(!open) content.style.display='block';
     });
-  }
+  });
 });
